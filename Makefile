@@ -1,7 +1,7 @@
 # Variables
 IMAGE_REPO ?= ghcr.io/neuro-inc
 IMAGE_NAME ?= fooocus
-IMAGE_TAG := latest
+IMAGE_TAG ?= latest
 IMAGE_REF = $(IMAGE_REPO)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 # Build Docker images
