@@ -8,6 +8,25 @@ on:
     branches: [apolo]
 
 jobs:
+  release-test:
+    name: Release dev image for testing workflow
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v4
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Build Docker image
+        run: make build-image
+      - name: Push image
+        run: |
+          export IMAGE_TAG=development
+          make push-image
   release-development:
     name: Release dev image
     runs-on: ubuntu-latest
