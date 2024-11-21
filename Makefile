@@ -13,17 +13,9 @@ build-image:
 
 # Push Docker images
 push-image:
-	@if [ ! -z TAGS ]; then	\
-		echo "Pushing tags $(TAGS)"	\
-		docker tag $(IMAGE_NAME):latest $(TAGS)	\
-		docker push $(TAGS)	\
-		echo "Done pushing tag "	\
-	else;	\
-		echo "Pushing Docker image $(IMAGE_REF)" \
-		docker tag $(IMAGE_NAME):latest $(IMAGE_REF) \
-		docker push $(IMAGE_REF) \
-	fi
-
+	@echo "Pushing Docker image $(IMAGE_REF)"
+	docker tag $(IMAGE_NAME):latest $(IMAGE_REF)
+	docker push $(IMAGE_REF)
 
 # Phony targets
 .PHONY: build-image push-image
