@@ -32,7 +32,7 @@ jobs:
         run: make build-image
       - name: Push image
         run: |
-          export IMAGE_TAG=${{ steps.meta.outputs.tags }}
+          export TAGS="${{ steps.meta.outputs.tags }}"
           make push-image
   release-development:
     name: Release dev image
