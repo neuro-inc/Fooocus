@@ -13,16 +13,16 @@ build-image:
 
 # Push Docker images
 push-image:
-	@echo "Pushing Docker image $(IMAGE_REF)"
-	docker tag $(IMAGE_NAME):latest $(IMAGE_REF)
-	docker push $(IMAGE_REF)
-	@echo "Done pushing Docker image $(IMAGE_REF)"
-	if [ ! -z TAGS ]; then
-		echo "Pushing extra tags $(TAGS)"
-		docker tag $(IMAGE_NAME):latest $(TAGS)
-		docker push $(TAGS)
-		echo "Done pushing tag "
-
+	@if [ ! -z TAGS ]; then	\
+		echo "Pushing tags $(TAGS)"	\
+		docker tag $(IMAGE_NAME):latest $(TAGS)	\
+		docker push $(TAGS)	\
+		echo "Done pushing tag "	\
+	else;	\
+		echo "Pushing Docker image $(IMAGE_REF)" \
+		docker tag $(IMAGE_NAME):latest $(IMAGE_REF) \
+		docker push $(IMAGE_REF) \
+	fi
 
 
 # Phony targets
