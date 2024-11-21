@@ -1,0 +1,50 @@
+kind: live
+title: Fooocus
+
+defaults:
+  life_span: 5d
+  preset: a100x1
+
+images:
+  fooocus:
+    ref: ghcr.io/neuro-inc/fooocus:latest
+  fooocus_apolo:
+    ref: image:${{ flow.project_id }}
+    context: ${{ flow.workspace }}
+    dockerfile: ${{ flow.workspace }}/Dockerfile
+    # build_preset: cpu-medium # to build this image you need at least 17GB of RAM
+volumes:
+  data:
+    remote: storage:/$[[ project.project_name ]]/$[[ flow.project_id ]]/data
+    mount: /content/data
+    local: models
+  outputs:
+    remote: storage:/$[[ project.project_name ]]/$[[ flow.project_id ]]/app/outputs
+    mount: /content/app/outputs
+
+jobs:
+  fooocus:
+    # image: ${{images.fooocus_apolo.ref}}
+    image: ${{images.fooocus.ref}}
+    name: fooocus
+    preset: a100x1
+    http_port: 7865
+    browse: true
+    volumes:
+      - ${{volumes.data.ref_rw}}
+      - ${{volumes.outputs.ref_rw}}
+    env:
+      CMDARGS: --listen # Arguments for launch.py.
+      DATADIR: ${{ volumes.data.mount }} # Directory which stores models, outputs dir
+      config_path: ${{ volumes.data.mount }}/config.txt
+      config_example_path: ${{ volumes.data.mount }}/config_modification_tutorial.txt
+      path_checkpoints: ${{ volumes.data.mount }}/models/checkpoints/
+      path_loras: ${{ volumes.data.mount }}/models/loras/
+      path_embeddings: ${{ volumes.data.mount }}/models/embeddings/
+      path_vae_approx: ${{ volumes.data.mount }}/models/vae_approx/
+      path_upscale_models: ${{ volumes.data.mount }}/models/upscale_models/
+      path_inpaint: ${{ volumes.data.mount }}/models/inpaint/
+      path_controlnet: ${{ volumes.data.mount }}/models/controlnet/
+      path_clip_vision: ${{ volumes.data.mount }}/models/clip_vision/
+      path_fooocus_expansion: ${{ volumes.data.mount }}/models/prompt_expansion/fooocus_expansion/
+      path_outputs: ${{ volumes.outputs.mount }}/ # Warning: If it is not located under '/content/app', you can't see history log!
