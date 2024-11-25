@@ -18,12 +18,13 @@ RUN adduser --disabled-password --gecos '' user && \
 	mkdir -p /content/app /content/data
 
 COPY entrypoint.sh /content/
-RUN chown -R user:user /content
+# RUN chown -R user:user /content
 
 WORKDIR /content
-USER user
+# USER user
 
-COPY --chown=user:user . /content/app
+# COPY --chown=user:user . /content/app
+COPY . /content/app
 RUN mv /content/app/models /content/app/models.org
 
 CMD [ "sh", "-c", "/content/entrypoint.sh ${CMDARGS}" ]
