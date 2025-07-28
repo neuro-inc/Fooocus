@@ -8,6 +8,13 @@ on:
     branches: [apolo]
 
 jobs:
+  stub:
+    name: Stub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stub
+        run: echo "Stub"
+
   release-development:
     name: Release dev image
     runs-on: ubuntu-latest
